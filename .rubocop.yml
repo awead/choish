@@ -1,0 +1,17 @@
+require: rubocop-rspec
+
+inherit_from:
+  - https://raw.githubusercontent.com/psu-stewardship/guides/master/style/ruby/.rubocop.yml
+
+AllCops:
+  TargetRubyVersion: 2.3
+
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/views/**/*'
+    - 'spec/routing/**/*'
+    - 'spec/rake/**/*'
+    - 'spec/config/**/*'
+    - 'spec/models/batch_spec.rb'
+    - 'spec/features/**/*'
+    - 'spec/support/**/*'
