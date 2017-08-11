@@ -25,6 +25,7 @@ group :development, :test do
   gem 'capybara', '~> 2.13'
   gem 'pry-byebug'
   gem 'pry-rails'
+  gem 'rspec-its'
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-rspec'
