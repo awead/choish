@@ -19,3 +19,4 @@ RSpec/DescribeClass:
 Metrics/BlockLength:
   Exclude:
     - 'spec/models/**/*'
+    - 'lib/tasks/**/*'
