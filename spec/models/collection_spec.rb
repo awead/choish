@@ -23,7 +23,19 @@ RSpec.describe Collection do
   end
 
   describe '#member_ids' do
-    before { collection.member_ids = [1, 2, 3] }
-    its(:member_ids) { is_expected.to eq([1, 2, 3]) }
+    context 'with an array of ids' do
+      before { collection.member_ids = [1, 2, 3] }
+      its(:member_ids) { is_expected.to eq([1, 2, 3]) }
+    end
+
+    context 'with a stream of ids' do
+      before do
+        (1..3).each do |id|
+          collection.member_ids << id
+        end
+      end
+
+      its(:member_ids) { is_expected.to eq([1, 2, 3]) }
+    end
   end
 end

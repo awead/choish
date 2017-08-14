@@ -15,3 +15,7 @@ RSpec/DescribeClass:
     - 'spec/models/batch_spec.rb'
     - 'spec/features/**/*'
     - 'spec/support/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/models/**/*'
