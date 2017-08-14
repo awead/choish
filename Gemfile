@@ -20,11 +20,13 @@ gem 'puma', '~> 3.7'
 gem 'rails', '~> 5.1.3'
 gem 'rsolr', '>= 1.0'
 gem 'sass-rails', '~> 5.0'
-gem 'sqlite3'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
+gem 'therubyracer'
+gem 'execjs'
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'capybara', '~> 2.13'
   gem 'pry-byebug'
   gem 'pry-rails'
@@ -34,6 +36,12 @@ group :development, :test do
   gem 'rubocop-rspec'
   gem 'selenium-webdriver'
   gem 'solr_wrapper', '>= 0.3'
+  gem 'capistrano', '~> 3.7', require: false
+  gem 'capistrano-bundler', '~> 1.2',require: false
+  gem 'capistrano-rails', '~> 1.2', require: false
+  gem 'capistrano-rbenv', '~> 2.1', require: false
+  gem 'capistrano-rbenv-install'
+  gem 'capistrano-resque', '~> 0.2.1', require: false
 end
 
 group :development do
