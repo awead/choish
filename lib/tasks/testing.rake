@@ -9,14 +9,15 @@ namespace :choish do
       title: ['Test Collection'],
       description: ['Collection for adding a large number of test works']
     )
+    collection.id = SecureRandom.uuid
+    adapter.persister.save(resource: collection)
 
     (1..length).each do |count|
       work = Work.new
       work.title = ["Sample Work #{count}"]
       work.id = SecureRandom.uuid
-      collection.member_ids << work.id
+      work.collection_id = collection.id
       adapter.persister.save(resource: work)
     end
-    adapter.persister.save(resource: collection)
   end
 end

@@ -21,8 +21,8 @@ RSpec.describe Work do
     its(:description) { is_expected.to eq(['some description']) }
   end
 
-  describe '#member_ids' do
-    before { work.member_ids = [1, 2, 3] }
-    its(:member_ids) { is_expected.to eq([1, 2, 3]) }
+  describe '#collection_id' do
+    before { work.collection_id = 1 }
+    its(:collection_id) { is_expected.to be_kind_of(Valkyrie::ID) }
   end
 end

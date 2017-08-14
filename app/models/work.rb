@@ -5,5 +5,5 @@ class Work < Valkyrie::Resource
   attribute :id, Valkyrie::Types::ID.optional
   attribute :title, Valkyrie::Types::Set
   attribute :description, Valkyrie::Types::Set
-  attribute :member_ids, Valkyrie::Types::Array
+  attribute :collection_id, Valkyrie::Types::ID.optional
 end
