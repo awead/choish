@@ -20,3 +20,4 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/models/**/*'
     - 'lib/tasks/**/*'
+    - 'app/controllers/catalog_controller.rb'
