@@ -21,3 +21,4 @@ Metrics/BlockLength:
     - 'spec/models/**/*'
     - 'lib/tasks/**/*'
     - 'app/controllers/catalog_controller.rb'
+    - 'config/deploy.rb'
