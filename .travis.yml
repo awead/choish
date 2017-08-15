@@ -1,0 +1,31 @@
+language: ruby
+cache:
+  bundler: true
+  directories:
+    - dep_cache
+bundler_args: --without development debug
+sudo: false
+services:
+  - postgresql
+rvm:
+  - 2.4.1
+jdk:
+  - oraclejdk8
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  matrix:
+    - TEST_SUITE=rspec
+    - TEST_SUITE=rubocop
+before_install:
+  - mkdir -p dep_cache
+before_script:
+  - cp config/travis/solr_wrapper_test.yml config/solr_wrapper_test.yml
+  - cp config/travis/fcrepo_wrapper_test.yml config/fcrepo_wrapper_test.yml
+  - cp config/travis/database.yml config/database.yml
+  - psql -c 'create database travis_ci_test;' -U postgres
+matrix:
+  fast_finish: true
+script:
+  - bundle exec rake choish:travis:$TEST_SUITE
+
