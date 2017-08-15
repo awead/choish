@@ -33,6 +33,7 @@ group :development, :test do
   gem 'capistrano-rbenv-install'
   gem 'capistrano-resque', '~> 0.2.1', require: false
   gem 'capybara', '~> 2.13'
+  gem 'fcrepo_wrapper'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rspec-its'

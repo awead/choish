@@ -207,6 +207,8 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday-encoding (0.0.4)
       faraday
+    fcrepo_wrapper (0.8.0)
+      ruby-progressbar
     ffi (1.9.18)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
@@ -512,6 +514,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
   execjs
+  fcrepo_wrapper
   jbuilder (~> 2.5)
   jquery-rails
   json
