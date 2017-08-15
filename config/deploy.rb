@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # lock '3.6'
 
 # Set assets roles to occur on jobs as well as web
@@ -16,10 +17,8 @@ set :deploy_to, "/home/deploy/#{fetch(:application)}"
 set :use_sudo, false
 
 # ssh key settings
-set :ssh_options, {
-  keys: [File.join(ENV['HOME'], '.ssh', 'id_deploy_rsa')],
-  forward_agent: true
-}
+set :ssh_options, keys: [File.join(ENV['HOME'], '.ssh', 'id_deploy_rsa')],
+                  forward_agent: true
 
 # rbenv settings
 set :rbenv_type, :user # or :system, depends on your rbenv setup
@@ -93,7 +92,6 @@ namespace :apache do
 end
 
 namespace :deploy do
-
   desc 'set up the shared directory to have the symbolic links to the appropriate directories shared between servers'
   task :symlink_shared_directories do
     on roles(:web, :job) do
@@ -112,7 +110,7 @@ namespace :deploy do
       execute 'sudo /sbin/service resque restart'
     end
   end
-  #after :published, :resquepoolrestart
+  # after :published, :resquepoolrestart
 
   desc 'Compile assets on for selected server roles'
   task :roleassets do
@@ -136,7 +134,7 @@ namespace :deploy do
       end
     end
   end
-  #after :roleassets, :symlink_resque_assets
+  # after :roleassets, :symlink_resque_assets
 
   # Passenger Capistrano Task
   # The passenger install task allows Chef to install Passenger now via Yum, but it allows Capistrano to maintain the file
