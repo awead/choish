@@ -25,4 +25,9 @@ RSpec.describe Work do
     before { work.collection_id = 1 }
     its(:collection_id) { is_expected.to be_kind_of(Valkyrie::ID) }
   end
+
+  describe '#file_ids' do
+    before { work.file_ids = [1, 2, 3] }
+    its(:file_ids) { is_expected.to eq([1, 2, 3]) }
+  end
 end

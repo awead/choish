@@ -6,4 +6,5 @@ class Work < Valkyrie::Resource
   attribute :title, Valkyrie::Types::Set
   attribute :description, Valkyrie::Types::Set
   attribute :collection_id, Valkyrie::Types::ID.optional
+  attribute :file_ids, Valkyrie::Types::Array
 end
