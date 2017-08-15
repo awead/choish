@@ -80,11 +80,13 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_index_field 'title_tesim', label: 'Title'
     config.add_index_field 'description_tesim', label: 'Description'
+    config.add_index_field 'file_ids_ssim', label: 'Files'
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'title_tesim', label: 'Title'
     config.add_show_field 'description_tesim', label: 'Description'
+    config.add_show_field 'file_ids_ssim', label: 'Files'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
