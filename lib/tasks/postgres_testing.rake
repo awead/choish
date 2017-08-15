@@ -1,22 +1,10 @@
 # frozen_string_literal: true
 
-namespace :choish do
-  desc 'Clean out solr'
-  task clear_solr: :environment do
-    Blacklight.default_index.connection.delete_by_query('*:*')
-    Blacklight.default_index.connection.commit
-  end
-
-  desc 'Clean out files'
-  task clear_files: :environment do
-    FileUtils.rm_rf('tmp/files')
-  end
-
-  desc 'Clean out all the persisters and indexes'
-  task clean: ['db:reset', :clear_solr, :clear_files]
+namespace :postgres_testing do
+  include TestingSupport
 
   desc 'Add a lot of works to a collection'
-  task :collection_test, [:length] => [:environment] do |_t, args|
+  task :collections, [:length] => [:environment] do |_t, args|
     length = args.fetch(:length, 10).to_i
     adapter = IndexingAdapter.new(metadata_adapter: Valkyrie::Persistence::Postgres::MetadataAdapter.new,
                                   index_adapter: Valkyrie::MetadataAdapter.find(:index_solr))
@@ -43,7 +31,7 @@ namespace :choish do
   end
 
   desc 'Add N number of collections to a parent collection'
-  task :nested_collection_test, [:length] => [:environment] do |_t, args|
+  task :nested_collections, [:length] => [:environment] do |_t, args|
     length = args.fetch(:length, 10).to_i
     adapter = IndexingAdapter.new(metadata_adapter: Valkyrie::Persistence::Postgres::MetadataAdapter.new,
                                   index_adapter: Valkyrie::MetadataAdapter.find(:index_solr))
@@ -70,8 +58,8 @@ namespace :choish do
     end
   end
 
-  desc 'Creating works with fMetadataAdapteriles'
-  task :files_test, [:length] => [:environment] do |_t, args|
+  desc 'Creating works with files'
+  task :files, [:length] => [:environment] do |_t, args|
     length = args.fetch(:length, 10).to_i
     adapter = IndexingAdapter.new(metadata_adapter: Valkyrie::Persistence::Postgres::MetadataAdapter.new,
                                   index_adapter: Valkyrie::MetadataAdapter.find(:index_solr))
@@ -91,15 +79,6 @@ namespace :choish do
         work.file_ids = [file.id]
         buffered_adapter.persister.save(resource: work)
       end
-    end
-  end
-
-  def randomize_file(id)
-    FileUtils.rm_f('tmp/small_random.bin')
-    FileUtils.cp('spec/fixtures/small_random.bin', 'tmp')
-    File.open('tmp/small_random.bin', 'a') do |file|
-      file.truncate((file.size - 36))
-      file.syswrite(id)
     end
   end
 end

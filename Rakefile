@@ -4,6 +4,7 @@
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
 require_relative 'config/application'
+require_relative 'lib/tasks/testing_support'
 
 # Load rake tasks for development and testing
 unless Rails.env.production?
