@@ -1,0 +1,7 @@
+RSpec/ExampleLength:
+  Exclude:
+    - spec/valkyrie/persistence/active_fedora/query_service_spec.rb
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - spec/valkyrie/persistence/active_fedora/query_service_spec.rb

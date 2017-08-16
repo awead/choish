@@ -25,6 +25,11 @@ gem 'therubyracer'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 
+# Fedora Adapter
+gem 'active-fedora'
+gem 'hydra-works'
+gem 'rdf'
+
 group :development, :test do
   gem 'capistrano', '~> 3.7', require: false
   gem 'capistrano-bundler', '~> 1.2', require: false
