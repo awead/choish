@@ -3,7 +3,14 @@
 module Valkyrie::Persistence::ActiveFedora::ORM
   class Schema < ActiveTriples::Schema
     property :title, predicate: ::RDF::Vocab::DC.title
+
+    # Additional properties for our models
     property :description, predicate: ::RDF::Vocab::DC.abstract
+    property :keywords, predicate: ::RDF::Vocab::DC.subject
+    property :has_collections, predicate: ::RDF::URI('http://example.com/hasCollections')
+    property :has_files, predicate: ::RDF::URI('http://example.com/hasFiles')
+    property :part_of_collections, predicate: ::RDF::URI('http://example.com/partOfCollections')
+
     property :author, predicate: ::RDF::Vocab::DC.creator
     property :testing, predicate: ::RDF::URI('http://example.com/testing')
     property :a_member_of, predicate: ::RDF::URI('http://example.com/member_of')

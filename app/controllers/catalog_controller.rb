@@ -70,6 +70,8 @@ class CatalogController < ApplicationController
     # :index_range can be an array or range of prefixes that will be used to create the navigation (note: It is case sensitive when searching values)
 
     config.add_facet_field 'internal_resource_ssim', label: 'Resource Type'
+    config.add_facet_field 'keywords_ssim', label: 'Keywords'
+    config.add_facet_field 'part_of_collections_ssim', label: 'In Collections'
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -80,13 +82,19 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_index_field 'title_tesim', label: 'Title'
     config.add_index_field 'description_tesim', label: 'Description'
-    config.add_index_field 'file_ids_ssim', label: 'Files'
+    config.add_index_field 'has_files_ssim', label: 'Files'
+    config.add_index_field 'keywords_ssim', label: 'Keywords'
+    config.add_index_field 'part_of_collections_ssim', label: 'In Collections'
+    config.add_index_field 'has_collections_ssim', label: 'Has Collections'
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'title_tesim', label: 'Title'
     config.add_show_field 'description_tesim', label: 'Description'
-    config.add_show_field 'file_ids_ssim', label: 'Files'
+    config.add_show_field 'has_files_ssim', label: 'Files'
+    config.add_show_field 'keywords_ssim', label: 'Keywords'
+    config.add_show_field 'part_of_collections_ssim', label: 'In Collections'
+    config.add_show_field 'has_collections_ssim', label: 'Has Collections'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

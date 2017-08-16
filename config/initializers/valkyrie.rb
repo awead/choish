@@ -32,4 +32,9 @@ Rails.application.config.to_prepare do
                                                      resource_indexer: Valkyrie::Indexers::AccessControlsIndexer),
     :index_solr
   )
+
+  Valkyrie::MetadataAdapter.register(
+    Valkyrie::Persistence::ActiveFedora::MetadataAdapter.new,
+    :fedora
+  )
 end

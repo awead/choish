@@ -22,6 +22,16 @@ RSpec.describe Collection do
     its(:description) { is_expected.to eq(['some description']) }
   end
 
+  describe '#keywords' do
+    before { collection.keywords = ['foo'] }
+    its(:keywords) { is_expected.to eq(['foo']) }
+  end
+
+  describe '#has_collections' do
+    before { collection.has_collections = [1, 2, 3] }
+    its(:has_collections) { is_expected.to eq([1, 2, 3]) }
+  end
+
   describe '#member_ids' do
     context 'with an array of ids' do
       before { collection.member_ids = [1, 2, 3] }
