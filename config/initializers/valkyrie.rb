@@ -3,7 +3,7 @@
 require 'valkyrie'
 Rails.application.config.to_prepare do
   Valkyrie::MetadataAdapter.register(
-    Valkyrie::Persistence::Postgres::MetadataAdapter,
+    Valkyrie::Persistence::Postgres::MetadataAdapter.new,
     :postgres
   )
 
