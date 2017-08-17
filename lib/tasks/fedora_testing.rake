@@ -2,7 +2,12 @@
 
 namespace :fedora_testing do
   desc 'Run all the Fedora tests'
-  task all: [:collections, :nested_collections, :files]
+  task :all, [:length] => [:environment] do |_t, args|
+    length = args.fetch(:length, 10).to_i
+    Rake::Task['fedora_testing:collections'].invoke(length)
+    Rake::Task['fedora_testing:nested_collections'].invoke(length)
+    Rake::Task['fedora_testing:files'].invoke(length)
+  end
 
   desc 'Add a lot of works to a collection in Fedora'
   task :collections, [:length] => [:environment] do |_t, args|
@@ -21,10 +26,15 @@ namespace :fedora_testing do
     # from the persist process, such as the Fedora id that was minted.
     collection = adapter.persister.save(resource: collection_resource)
 
-    (1..length).each do |count|
-      work = Work.new(title: ["Sample Work #{count}"], keywords: ['fedora', 'collections'])
-      work.part_of_collections = [collection.id.to_uri]
-      adapter.persister.save(resource: work)
+    $stdout = File.new("tmp/fedora_collections_#{length}.csv", 'w')
+    $stdout.sync = true
+
+    Benchmark.benchmark("User,System,Total,Real\n", 0, "%u,%y,%t,%r\n") do |bench|
+      (1..length).each do |count|
+        work = Work.new(title: ["Sample Work #{count}"], keywords: ['fedora', 'collections'])
+        work.part_of_collections = [collection.id.to_uri]
+        bench.report { adapter.persister.save(resource: work) }
+      end
     end
   end
 
@@ -39,16 +49,19 @@ namespace :fedora_testing do
       keywords: ['fedora', 'nested_collections']
     )
 
-    children = []
+    $stdout = File.new("tmp/fedora_nested_collections_#{length}.csv", 'w')
+    $stdout.sync = true
 
-    (1..length).each do |count|
-      child = Collection.new(title: ["Child Collection #{count}"], keywords: ['fedora', 'nested_collections'])
-      result = adapter.persister.save(resource: child)
-      children << result
+    Benchmark.benchmark("User,System,Total,Real\n", 0, "%u,%y,%t,%r\n") do |bench|
+      (1..length).each do |count|
+        child = Collection.new(title: ["Child Collection #{count}"], keywords: ['fedora', 'nested_collections'])
+        result = adapter.persister.save(resource: child)
+        bench.report do
+          collection_resource.has_collections << result.id
+          adapter.persister.save(resource: collection_resource)
+        end
+      end
     end
-    collection_resource.has_collections = children.map(&:id)
-    collection = adapter.persister.save(resource: collection_resource)
-    puts "Collection uri = #{collection.id.to_uri}"
   end
 
   desc 'Creating works with files in Fedora'
@@ -58,21 +71,28 @@ namespace :fedora_testing do
                                   index_adapter: Valkyrie::MetadataAdapter.find(:index_solr))
     storage = Valkyrie::StorageAdapter.find(:fedora)
 
-    adapter.persister.buffer_into_index do |buffered_adapter|
-      (1..length).each do |count|
-        id = SecureRandom.uuid
-        randomize_file(id)
-        work = Work.new(
-          id: id,
-          title: ["Sample Work with a file in Fedora #{count}"],
-          keywords: ['fedora', 'files']
-        )
-        file = storage.upload(
-          file: Choish::File.open('tmp/small_random.bin', 'r'),
-          resource: work
-        )
-        work.has_files = [file.id]
-        buffered_adapter.persister.save(resource: work)
+    $stdout = File.new("tmp/fedora_files_#{length}.csv", 'w')
+    $stdout.sync = true
+
+    Benchmark.benchmark("User,System,Total,Real\n", 0, "%u,%y,%t,%r\n") do |bench|
+      adapter.persister.buffer_into_index do |buffered_adapter|
+        (1..length).each do |count|
+          id = SecureRandom.uuid
+          randomize_file(id)
+          bench.report do
+            work = Work.new(
+              id: id,
+              title: ["Sample Work with a file in Fedora #{count}"],
+              keywords: ['fedora', 'files']
+            )
+            file = storage.upload(
+              file: Choish::File.open('tmp/small_random.bin', 'r'),
+              resource: work
+            )
+            work.has_files = [file.id]
+            buffered_adapter.persister.save(resource: work)
+          end
+        end
       end
     end
   end
