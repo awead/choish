@@ -21,13 +21,18 @@ RSpec.describe Work do
     its(:description) { is_expected.to eq(['some description']) }
   end
 
-  describe '#collection_id' do
-    before { work.collection_id = 1 }
-    its(:collection_id) { is_expected.to be_kind_of(Valkyrie::ID) }
+  describe '#keywords' do
+    before { work.keywords = ['foo'] }
+    its(:keywords) { is_expected.to eq(['foo']) }
   end
 
-  describe '#file_ids' do
-    before { work.file_ids = [1, 2, 3] }
-    its(:file_ids) { is_expected.to eq([1, 2, 3]) }
+  describe '#part_of_collections' do
+    before { work.part_of_collections = 1 }
+    its(:part_of_collections) { is_expected.to eq([1]) }
+  end
+
+  describe '#has_files' do
+    before { work.has_files = [1, 2, 3] }
+    its(:has_files) { is_expected.to eq([1, 2, 3]) }
   end
 end

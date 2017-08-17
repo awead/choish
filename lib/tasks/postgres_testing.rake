@@ -3,6 +3,9 @@
 namespace :postgres_testing do
   include TestingSupport
 
+  desc 'Run all the Postgres tests'
+  task all: [:collections, :nested_collections, :files]
+
   desc 'Add a lot of works to a collection'
   task :collections, [:length] => [:environment] do |_t, args|
     length = args.fetch(:length, 10).to_i
@@ -10,10 +13,11 @@ namespace :postgres_testing do
                                   index_adapter: Valkyrie::MetadataAdapter.find(:index_solr))
 
     collection = Collection.new(
+      id: SecureRandom.uuid,
       title: ['Test Collection'],
-      description: ['Collection for adding a large number of test works']
+      description: ['Collection for adding a large number of test works'],
+      keywords: ['postgres', 'collections']
     )
-    collection.id = SecureRandom.uuid
 
     adapter.persister.buffer_into_index do |buffered_adapter|
       buffered_adapter.persister.save(resource: collection)
@@ -21,10 +25,12 @@ namespace :postgres_testing do
 
     adapter.persister.buffer_into_index do |buffered_adapter|
       (1..length).each do |count|
-        work = Work.new
-        work.title = ["Sample Work #{count}"]
-        work.id = SecureRandom.uuid
-        work.collection_id = collection.id
+        work = Work.new(
+          title: ["Sample Work #{count}"],
+          id: SecureRandom.uuid,
+          part_of_collections: collection.id,
+          keywords: ['postgres', 'collections']
+        )
         buffered_adapter.persister.save(resource: work)
       end
     end
@@ -37,23 +43,29 @@ namespace :postgres_testing do
                                   index_adapter: Valkyrie::MetadataAdapter.find(:index_solr))
 
     collection = Collection.new(
+      id: SecureRandom.uuid,
       title: ['Parent Collection'],
-      description: ['Collection containing N number of other collections']
+      description: ['Collection containing N number of other collections'],
+      keywords: ['postgres', 'nested_collections']
     )
-    collection.id = SecureRandom.uuid
 
     adapter.persister.buffer_into_index do |buffered_adapter|
       buffered_adapter.persister.save(resource: collection)
     end
 
+    children = []
+
     adapter.persister.buffer_into_index do |buffered_adapter|
       (1..length).each do |count|
-        child = Collection.new
-        child.title = ["Child Collection #{count}"]
-        child.id = SecureRandom.uuid
-        buffered_adapter.persister.save(resource: child)
-        collection.member_ids << child.id
+        child = Collection.new(
+          title: ["Child Collection #{count}"],
+          id: SecureRandom.uuid,
+          keywords: ['postgres', 'nested_collections']
+        )
+        result = buffered_adapter.persister.save(resource: child)
+        children << result
       end
+      collection.has_collections = children.map(&:id)
       buffered_adapter.persister.save(resource: collection)
     end
   end
@@ -76,7 +88,8 @@ namespace :postgres_testing do
           file: Choish::File.open('tmp/small_random.bin', 'r'),
           resource: work
         )
-        work.file_ids = [file.id]
+        work.has_files = [file.id]
+        work.keywords = ['postgres', 'files']
         buffered_adapter.persister.save(resource: work)
       end
     end

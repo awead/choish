@@ -230,6 +230,15 @@ GEM
       deprecation
       mime-types (> 2.0, < 4.0)
       mini_magick (>= 3.2, < 5)
+    hydra-file_characterization (0.3.3)
+      activesupport (>= 3.0.0)
+    hydra-pcdm (0.9.0)
+      active-fedora (>= 10, < 12)
+      mime-types (>= 1)
+    hydra-works (0.12.0)
+      hydra-derivatives (~> 3.0)
+      hydra-file_characterization (~> 0.3, >= 0.3.3)
+      hydra-pcdm (>= 0.8)
     i18n (0.8.6)
     ice_nine (0.11.2)
     inflecto (0.0.2)
@@ -266,6 +275,7 @@ GEM
       rdf-turtle
       rdf-vocab (>= 0.8)
       slop
+    libv8 (3.16.14.19)
     libv8 (3.16.14.19-x86_64-darwin-16)
     link_header (0.0.8)
     listen (3.1.5)
@@ -505,6 +515,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active-fedora
   capistrano (~> 3.7)
   capistrano-bundler (~> 1.2)
   capistrano-rails (~> 1.2)
@@ -515,6 +526,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   execjs
   fcrepo_wrapper
+  hydra-works
   jbuilder (~> 2.5)
   jquery-rails
   json
@@ -524,6 +536,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.7)
   rails (~> 5.1.3)
+  rdf
   rsolr (>= 1.0)
   rspec-its
   rspec-rails

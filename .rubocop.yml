@@ -2,6 +2,7 @@ require: rubocop-rspec
 
 inherit_from:
   - https://raw.githubusercontent.com/psu-stewardship/guides/master/style/ruby/.rubocop.yml
+  - .rubocop_todo.yml
 
 AllCops:
   TargetRubyVersion: 2.3
@@ -22,3 +23,4 @@ Metrics/BlockLength:
     - 'lib/tasks/**/*'
     - 'app/controllers/catalog_controller.rb'
     - 'config/deploy.rb'
+    - 'config/initializers/valkyrie.rb'

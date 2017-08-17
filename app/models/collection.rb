@@ -6,5 +6,7 @@ class Collection < Valkyrie::Resource
   attribute :id, Valkyrie::Types::ID.optional
   attribute :title, Valkyrie::Types::Set
   attribute :description, Valkyrie::Types::Set
+  attribute :keywords, Valkyrie::Types::Array
   attribute :member_ids, Valkyrie::Types::Array
+  attribute :has_collections, Valkyrie::Types::Array
 end
