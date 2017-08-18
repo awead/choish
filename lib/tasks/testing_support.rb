@@ -9,4 +9,9 @@ module TestingSupport
       file.syswrite(id)
     end
   end
+
+  # @return [RDF::URI]
+  def id_to_uri(id)
+    RDF::URI(ActiveFedora::Base.id_to_uri(ActiveFedora::Noid.treeify(id.to_s)))
+  end
 end

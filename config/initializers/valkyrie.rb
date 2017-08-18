@@ -22,6 +22,14 @@ Rails.application.config.to_prepare do
 
   Valkyrie::MetadataAdapter.register(
     Valkyrie::Persistence::ActiveFedora::MetadataAdapter.new,
+    :active_fedora
+  )
+
+  Valkyrie::MetadataAdapter.register(
+    Valkyrie::Persistence::Fedora::MetadataAdapter.new(
+      connection: ::Ldp::Client.new(ActiveFedora.config.credentials[:url]),
+      base_path: ActiveFedora.config.credentials[:base_path].gsub(/\//, '')
+    ),
     :fedora
   )
 
