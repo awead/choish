@@ -30,6 +30,9 @@ gem 'active-fedora'
 gem 'hydra-works'
 gem 'rdf'
 
+# Valkkyrie's fedora adapter isn't translating uris correctly
+gem 'active_fedora-noid'
+
 group :development, :test do
   gem 'capistrano', '~> 3.7', require: false
   gem 'capistrano-bundler', '~> 1.2', require: false

@@ -19,6 +19,12 @@ namespace :testing_support do
     ActiveFedora::Cleaner.cleanout_fedora
   end
 
+  desc 'Truncate tables'
+  task truncate: :environment do
+    conn = ActiveRecord::Base.connection
+    (conn.tables - ['schema_migrations']).each { |t| conn.truncate(t) }
+  end
+
   desc 'Clean out all the persisters and indexes'
-  task clean: ['db:reset', :clear_solr, :clear_files, :clear_fedora]
+  task clean: [:truncate, :clear_solr, :clear_files, :clear_fedora]
 end
