@@ -67,31 +67,28 @@ namespace :active_fedora_testing do
   desc 'Creating works with files in Fedora'
   task :files, [:length] => [:environment] do |_t, args|
     length = args.fetch(:length, 10).to_i
-    adapter = IndexingAdapter.new(metadata_adapter: Valkyrie::Persistence::Postgres::MetadataAdapter.new,
-                                  index_adapter: Valkyrie::MetadataAdapter.find(:index_solr))
+    adapter = Valkyrie::MetadataAdapter.find(:active_fedora)
     storage = Valkyrie::StorageAdapter.find(:fedora)
 
     $stdout = File.new("tmp/active_fedora_files_#{length}.csv", 'w')
     $stdout.sync = true
 
     Benchmark.benchmark("User,System,Total,Real\n", 0, "%u,%y,%t,%r\n") do |bench|
-      adapter.persister.buffer_into_index do |buffered_adapter|
-        (1..length).each do |count|
-          id = SecureRandom.uuid
-          randomize_file(id)
-          bench.report do
-            work = Work.new(
-              id: id,
-              title: ["Sample Work with a file in Fedora #{count}"],
-              keywords: ['active_fedora', 'files']
-            )
-            file = storage.upload(
-              file: Choish::File.open('tmp/small_random.bin', 'r'),
-              resource: work
-            )
-            work.has_files = [file.id]
-            buffered_adapter.persister.save(resource: work)
-          end
+      (1..length).each do |count|
+        id = SecureRandom.uuid
+        randomize_file(id)
+        bench.report do
+          work = Work.new(
+            id: id,
+            title: ["Sample Work with a file in Fedora #{count}"],
+            keywords: ['active_fedora', 'files']
+          )
+          file = storage.upload(
+            file: Choish::File.open('tmp/small_random.bin', 'r'),
+            resource: work
+          )
+          work.has_files = [file.id]
+          adapter.persister.save(resource: work)
         end
       end
     end
