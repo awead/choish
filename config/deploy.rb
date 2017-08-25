@@ -104,6 +104,14 @@ namespace :deploy do
   end
   before 'deploy:check:linked_dirs', :symlink_shared_directories
 
+  desc 'set custom Fedora yaml file'
+  task :set_fedora_config do
+    on roles(:web, :job) do
+      execute "ln -sf /#{fetch(:application)}/config_#{fetch(:stage)}/cho/fedora-choish.yml /#{fetch(:application)}/config_#{fetch(:stage)}/cho/fedora.yml"
+    end
+  end
+  before 'deploy:symlink:linked_files', :set_fedora_config
+
   desc 'Restart resque-pool'
   task :resquepoolrestart do
     on roles(:job) do
