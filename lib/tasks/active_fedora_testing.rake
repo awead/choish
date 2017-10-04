@@ -36,6 +36,8 @@ namespace :active_fedora_testing do
         bench.report { adapter.persister.save(resource: work) }
       end
     end
+
+    FileUtils.cp('log/fedora-dev.log', "log/active_fedora_collections_#{length}.log")
   end
 
   desc 'Add N number of collections to a parent collection in Fedora'
