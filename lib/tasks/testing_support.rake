@@ -17,6 +17,7 @@ namespace :testing_support do
   desc 'Clean out Fedora'
   task clear_fedora: :environment do
     ActiveFedora::Cleaner.cleanout_fedora
+    FileUtils.rm_f('log/fedora-dev.log')
   end
 
   desc 'Truncate tables'

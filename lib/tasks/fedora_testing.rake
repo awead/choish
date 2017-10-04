@@ -38,6 +38,8 @@ namespace :fedora_testing do
         end
       end
     end
+
+    FileUtils.cp('log/fedora-dev.log', "log/fedora_collections_#{length}.log")
   end
 
   desc 'Add N number of collections to a parent collection in Fedora'
@@ -71,6 +73,8 @@ namespace :fedora_testing do
         end
       end
     end
+
+    FileUtils.cp('log/fedora-dev.log', "log/fedora_nested_collections_#{length}.log")
   end
 
   desc 'Creating works with files in Fedora'
@@ -108,5 +112,7 @@ namespace :fedora_testing do
         end
       end
     end
+
+    FileUtils.cp('log/fedora-dev.log', "log/fedora_files_#{length}.log")
   end
 end
