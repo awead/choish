@@ -10,27 +10,34 @@ namespace :active_fedora_testing do
   end
 
   desc 'Add a lot of works to a collection in Fedora'
-  task :collections, [:length] => [:environment] do |_t, args|
+  task :collections, [:length, :offset] => [:environment] do |_t, args|
     length = args.fetch(:length, 10).to_i
+    offset = args.fetch(:offset, 1).to_i
     adapter = Valkyrie::MetadataAdapter.find(:active_fedora)
 
-    collection_resource = Collection.new(
-      title: ['Test Collection'],
-      description: ['Fedora test for a collection containing a large number of works'],
-      keywords: ['active_fedora', 'collections']
-    )
+    existing_collection = Valkyrie::Persistence::ActiveFedora::ORM::Resource.where(title_ssim: 'Test Collection').first
 
-    # @comment Although we persist {collection_resource} its object doesn't get
-    # modified by the results of the process. The output from {#save} is captured
-    # to a new object, {collection}, which actually contains the information resulting
-    # from the persist process, such as the Fedora id that was minted.
-    collection = adapter.persister.save(resource: collection_resource)
+    if existing_collection
+      collection = adapter.query_service.find_by(id: existing_collection.id)
+    else
+      collection_resource = Collection.new(
+        title: ['Test Collection'],
+        description: ['Fedora test for a collection containing a large number of works'],
+        keywords: ['active_fedora', 'collections']
+      )
 
-    $stdout = File.new("tmp/active_fedora_collections_#{length}.csv", 'w')
+      # @comment Although we persist {collection_resource} its object doesn't get
+      # modified by the results of the process. The output from {#save} is captured
+      # to a new object, {collection}, which actually contains the information resulting
+      # from the persist process, such as the Fedora id that was minted.
+      collection = adapter.persister.save(resource: collection_resource)
+    end
+
+    $stdout = File.new("tmp/active_fedora_collections_#{length}_#{offset}.csv", 'w')
     $stdout.sync = true
 
     Benchmark.benchmark("User,System,Total,Real\n", 0, "%u,%y,%t,%r\n") do |bench|
-      (1..length).each do |count|
+      (offset..(length + offset - 1)).each do |count|
         work = Work.new(title: ["Sample Work #{count}"], keywords: ['active_fedora', 'collections'])
         work.part_of_collections = [collection.id.to_uri]
         bench.report { adapter.persister.save(resource: work) }
@@ -46,7 +53,7 @@ namespace :active_fedora_testing do
     adapter = Valkyrie::MetadataAdapter.find(:active_fedora)
 
     collection_resource = Collection.new(
-      title: ['Test Collection'],
+      title: ['Test Nested Collection'],
       description: ['Fedora test for a collection containing child collections'],
       keywords: ['active_fedora', 'nested_collections']
     )
