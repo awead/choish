@@ -154,6 +154,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    database_cleaner (1.6.1)
     declarative (0.0.9)
     declarative-builder (0.1.0)
       declarative-option (< 0.2.0)
@@ -427,6 +428,7 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     rubocop-rspec (1.15.1)
       rubocop (>= 0.42.0)
+    ruby-prof (0.16.2)
     ruby-progressbar (1.8.1)
     ruby_dep (1.5.0)
     ruby_tika_app (1.5.0)
@@ -528,6 +530,7 @@ DEPENDENCIES
   capistrano-resque (~> 0.2.1)
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
+  database_cleaner
   execjs
   fcrepo_wrapper
   hydra-works
@@ -546,6 +549,7 @@ DEPENDENCIES
   rspec-rails
   rubocop
   rubocop-rspec
+  ruby-prof
   sass-rails (~> 5.0)
   selenium-webdriver
   solr_wrapper (>= 0.3)
@@ -559,4 +563,4 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 BUNDLED WITH
-   1.15.3
+   1.15.4

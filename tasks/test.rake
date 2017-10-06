@@ -15,6 +15,7 @@ namespace :choish do
     desc 'Execute Continuous Integration build (docs, tests with coverage)'
     task rspec: :environment do
       with_test_server do
+        Rake::Task['db:migrate'].invoke
         Rake::Task['choish:rspec'].invoke
       end
     end
