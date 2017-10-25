@@ -17,7 +17,7 @@ collection = adapter.persister.save(resource: collection_resource)
   work = Work.new(title: ["Sample Work #{count}"], keywords: ['active_fedora', 'collections'])
   work.part_of_collections = [collection.id.to_uri]
 
-  if (count == 1) || (count % 100 == 0)
+  if (count == 1) || (count % 1000 == 0)
     result = RubyProf.profile { adapter.persister.save(resource: work) }
     RubyProf::FlatPrinter.new(result).print(File.new("tmp/active_fedora_collections_profile_#{count}.txt", 'w'))
   else
