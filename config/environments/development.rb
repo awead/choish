@@ -3,7 +3,6 @@
 # Log Fedora calls
 require 'http_logger'
 HttpLogger.logger = Logger.new(Rails.root.join('log', 'fedora-dev.log'))
-HttpLogger.ignore = [/8983\/solr/]
 HttpLogger.colorize = false
 
 Rails.application.configure do
