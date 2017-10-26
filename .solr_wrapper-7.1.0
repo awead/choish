@@ -1,0 +1,9 @@
+# .solr_wrapper-7.1.0
+version: 7.1.0
+port: 8983
+instance_dir: tmp/solr-development-7.1.0
+download_dir: tmp
+collection:
+  persist: true
+  dir: solr/config-7.1.0
+  name: hydra-development
